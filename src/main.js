@@ -128,10 +128,69 @@ async function main() {
   const initialized = await system.initialize();
   if (initialized) {
     console.log('Web Automation System is running...');
-    // TEST THỦ CÔNG: Gọi processRealtimeData với dữ liệu mẫu
-    const testData = require('../data/realtime-data.json');
-    await system.processRealtimeData(testData);
-    // KHÔNG shutdown browser, giữ nguyên màn hình kết quả để kiểm tra thủ công
+    // Đọc mảng dữ liệu
+    const testDataArr = require('../data/realtime-data.json');
+    const accounts = require('../config/accounts.json');
+    // Gom nhóm theo DEPOT
+    const grouped = {};
+    for (const item of testDataArr) {
+      if (!grouped[item.DEPOT]) grouped[item.DEPOT] = [];
+      grouped[item.DEPOT].push(item);
+    }
+    const siteConfig = config.sites[0];
+    for (const depot in grouped) {
+      // Tạo context và page mới cho mỗi Depot
+      const playwright = require('playwright');
+      const context = await system.browserManager.browser.newContext({
+        userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+        viewport: { width: 1280, height: 720 }
+      });
+      const page = await context.newPage();
+      // Lấy account
+      const account = accounts[depot];
+      if (!account) {
+        console.error(`No account found for DEPOT ${depot}`);
+        continue;
+      }
+      // Chuẩn bị data login
+      const loginData = {
+        account,
+        ...grouped[depot][0] // lấy các trường chung
+      };
+      // Truy cập trang login
+      await page.goto(siteConfig.url);
+      await page.waitForLoadState('networkidle');
+      // Thực hiện login (các action trừ bước 6)
+      for (let i = 0; i < siteConfig.actions.length; i++) {
+        const action = siteConfig.actions[i];
+        if (action.selector === '#releaseOrderNumber' || action.selector === '#btn_ValidateRO') break;
+        await system.actionExecutor.executeAction(page, action, loginData);
+        if (action.delay) await page.waitForTimeout(action.delay);
+      }
+      // Lặp qua từng releaseOrderNumber cho Depot này
+      for (const item of grouped[depot]) {
+        const roData = {
+          account,
+          ...item
+        };
+        // Bước 6: nhập releaseOrderNumber và validate
+        for (let i = 0; i < siteConfig.actions.length; i++) {
+          const action = siteConfig.actions[i];
+          if (action.selector === '#releaseOrderNumber' || action.selector === '#btn_ValidateRO') {
+            await system.actionExecutor.executeAction(page, action, roData);
+            if (action.selector === '#btn_ValidateRO') {
+              await page.waitForTimeout(5000); // Delay 5s sau khi validate
+            } else if (action.delay) {
+              await page.waitForTimeout(action.delay);
+            }
+          }
+        }
+      }
+      // Logout
+      await system.actionExecutor.executeAction(page, { type: 'click', selector: '.btn.btn-logout.logout-btn', delay: 1000 }, loginData);
+      await page.waitForTimeout(1000);
+      await context.close(); // Đóng context và page sau khi xong Depot
+    }
     console.log('Automation finished. Browser will remain open for manual inspection.');
   } else {
     console.error('Failed to initialize system');

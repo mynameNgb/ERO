@@ -1,0 +1,22 @@
+{
+  "THT": {
+    "username": "cse1@depot.genuinepartner.com",
+    "password": "lta!1234567"
+  },
+  "SLD": {
+    "username": "depot.supporter1@depot.genuinepartner.com",
+    "password": "lta!1234567"
+  },
+  "BSD": {
+    "username": "cse.supervisor1@depot.genuinepartner.com",
+    "password": "lta!1234567"
+  },
+  "TBD": {
+    "username": "operation.manager1@depot.genuinepartner.com",
+    "password": "lta@12345678"
+  },
+  "SCD": {
+    "username": "ops-centralize@edepots.com",
+    "password": "lta@12345678"
+  }
+}

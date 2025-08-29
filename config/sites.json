@@ -4,8 +4,8 @@
       "name": "my-site",
       "url": "https://ero-partner.asia.cma-cgm.com/login",
       "credentials": {
-        "username": "cse1@depot.genuinepartner.com",
-        "password": "lta!1234567"
+        "username": "data.account.username",
+        "password": "data.account.password"
       },
       "selectors": {
         "confirm_button": ".el-button.el-button--danger",
@@ -29,13 +29,13 @@
         {
           "type": "input",
           "selector": "#username",
-          "value": "cse1@depot.genuinepartner.com",
+          "value": "data.account.username",
           "delay": 500
         },
         {
           "type": "input",
           "selector": "#password",
-          "value": "lta!1234567",
+          "value": "data.account.password",
           "delay": 500
         },
         {
@@ -47,7 +47,7 @@
         {
           "type": "input",
           "selector": "#releaseOrderNumber",
-          "value": "SGN2828120-002",
+          "value": "data.releaseOrderNumber",
           "delay": 500
         },
         {

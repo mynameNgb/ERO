@@ -1,0 +1,50 @@
+{
+  "sites": [
+    {
+      "name": "my-site",
+      "url": "https://ero-partner.asia.cma-cgm.com/login",
+      "credentials": {
+        "username": "cse1@depot.genuinepartner.com",
+        "password": "lta!1234567"
+      },
+      "selectors": {
+        "confirm_button": ".el-button.el-button--danger",
+        "login_button": ".btn.btn-login.forgotten.cma-external",
+        "username_field": "#username",
+        "password_field": "#password"
+      },
+      "actions": [
+        {
+          "type": "click",
+          "selector": ".el-button.el-button--danger",
+          "print_url": true,
+          "delay": 1000
+        },
+        {
+          "type": "click",
+          "selector": ".btn.btn-login.forgotten.cma-external",
+          "print_url": true,
+          "delay": 1000
+        },
+        {
+          "type": "input",
+          "selector": "#username",
+          "value": "cse1@depot.genuinepartner.com",
+          "delay": 500
+        },
+        {
+          "type": "input",
+          "selector": "#password",
+          "value": "lta!1234567",
+          "delay": 500
+        },
+        {
+          "type": "click",
+          "selector": ".btn.btn-login.cma-external",
+          "print_url": true,
+          "delay": 1000
+        }
+      ]
+    }
+  ]
+}

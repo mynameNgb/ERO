@@ -43,6 +43,17 @@
           "selector": ".btn.btn-login.cma-external",
           "print_url": true,
           "delay": 1000
+        },
+        {
+          "type": "input",
+          "selector": "#releaseOrderNumber",
+          "value": "SGN2828120-002",
+          "delay": 500
+        },
+        {
+          "type": "click",
+          "selector": "#btn_ValidateRO",
+          "delay": 1000
         }
       ]
     }

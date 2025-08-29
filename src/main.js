@@ -131,9 +131,8 @@ async function main() {
     // TEST THỦ CÔNG: Gọi processRealtimeData với dữ liệu mẫu
     const testData = require('../data/realtime-data.json');
     await system.processRealtimeData(testData);
-    // Kết thúc sau khi test
-    await system.shutdown();
-    process.exit(0);
+    // KHÔNG shutdown browser, giữ nguyên màn hình kết quả để kiểm tra thủ công
+    console.log('Automation finished. Browser will remain open for manual inspection.');
   } else {
     console.error('Failed to initialize system');
     process.exit(1);

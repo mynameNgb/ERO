@@ -1,25 +1,24 @@
-const { chromium } = require('playwright');
+const playwright = require('playwright');
 
 class BrowserManager {
   constructor(logger) {
     this.logger = logger;
     this.browser = null;
-    this.pages = new Map();
+    this.contexts = new Map();
   }
 
   async initialize() {
     try {
-      this.browser = await chromium.launch({
-        headless: process.env.NODE_ENV === 'production',
+      this.browser = await playwright.chromium.launch({
+        headless: false,
         args: [
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
+          '--start-maximized',
+          '--disable-blink-features=AutomationControlled',
           '--disable-dev-shm-usage',
-          '--disable-web-security',
-          '--disable-features=VizDisplayCompositor'
+          '--no-sandbox'
         ]
       });
-      this.logger.info('Browser initialized successfully');
+      this.logger.info('Browser initialized successfully (visible mode)');
     } catch (error) {
       this.logger.error('Failed to initialize browser:', error);
       throw error;
@@ -27,22 +26,38 @@ class BrowserManager {
   }
 
   async getPage(siteName) {
-    if (!this.pages.has(siteName)) {
-      // Tạo context với userAgent
+    if (!this.contexts.has(siteName)) {
       const context = await this.browser.newContext({
-        userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-        viewport: { width: 1280, height: 720 }
+        viewport: null,
+        userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
       });
+      
+      // Inject script to mask automation
+      await context.addInitScript(() => {
+        Object.defineProperty(navigator, 'webdriver', {
+          get: () => false
+        });
+      });
+      
       const page = await context.newPage();
-      this.pages.set(siteName, page);
+      this.contexts.set(siteName, { context, page });
     }
-    return this.pages.get(siteName);
+    return this.contexts.get(siteName).page;
   }
 
   async close() {
-    if (this.browser) {
-      await this.browser.close();
-      this.pages.clear();
+    try {
+      for (const [siteName, { context }] of this.contexts) {
+        await context.close();
+        this.logger.info(`Closed context for ${siteName}`);
+      }
+      this.contexts.clear();
+      if (this.browser) {
+        await this.browser.close();
+        this.logger.info('Browser closed successfully');
+      }
+    } catch (error) {
+      this.logger.error('Error closing browser:', error);
     }
   }
 }

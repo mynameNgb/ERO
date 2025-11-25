@@ -1,0 +1,5 @@
+{
+  "enabled": true,
+  "apiUrl": "https://apiedepot.gsotgroup.vn",
+  "updateIntervalMinutes": 15
+}

@@ -1,15 +1,19 @@
 {
   "THT": {
     "username": "cse1@depot.genuinepartner.com",
-    "password": "lta!1234567"
+    "password": "lta!12345678"
+  },
+  "THN": {
+    "username": "cse1@depot.genuinepartner.com",
+    "password": "lta!12345678"
   },
   "SLD": {
     "username": "depot.supporter1@depot.genuinepartner.com",
-    "password": "lta!1234567"
+    "password": "lta!12345678"
   },
   "BSD": {
     "username": "cse.supervisor1@depot.genuinepartner.com",
-    "password": "lta!1234567"
+    "password": "lta!12345678"
   },
   "TBD": {
     "username": "operation.manager1@depot.genuinepartner.com",
@@ -18,5 +22,9 @@
   "SCD": {
     "username": "ops-centralize@edepots.com",
     "password": "lta@12345678"
+  },
+  "PMCM": {
+    "username": "ict.supervisor1@icdcaimepthivai.com",
+    "password": "lta!1234567"
   }
 }

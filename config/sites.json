@@ -17,43 +17,78 @@
         {
           "type": "click",
           "selector": ".el-button.el-button--danger",
+          "typeAction": "login",
           "print_url": true,
-          "delay": 1000
+          "delay": 2500
         },
         {
           "type": "click",
           "selector": ".btn.btn-login.forgotten.cma-external",
+          "typeAction": "login",
           "print_url": true,
-          "delay": 1000
+          "delay": 2500
         },
         {
           "type": "input",
           "selector": "#username",
           "value": "data.account.username",
-          "delay": 500
+          "typeAction": "login",
+          "delay": 2500
         },
         {
           "type": "input",
           "selector": "#password",
           "value": "data.account.password",
-          "delay": 500
+          "typeAction": "login",
+          "delay": 2500
         },
         {
           "type": "click",
           "selector": ".btn.btn-login.cma-external",
+          "typeAction": "login",
           "print_url": true,
-          "delay": 1000
+          "delay": 2500
         },
         {
           "type": "input",
           "selector": "#releaseOrderNumber",
           "value": "data.releaseOrderNumber",
-          "delay": 500
+          "typeAction": "roData",
+          "delay": 2500
         },
         {
           "type": "click",
           "selector": "#btn_ValidateRO",
-          "delay": 1000
+          "typeAction": "roData",
+          "delay": 7000
+        },
+        {
+          "type": "click",
+          "selector": "#div_OpenROs ",
+          "typeAction": "roData",
+          "matchField": {
+            "selector": "#containerType .container-type-input",
+            "value": "containerType"
+          },
+          "firstOnly": true,
+          "delay": 2500
+        },
+        {
+          "type": "click",
+          "selector": "#increment",
+          "typeAction": "roData",
+          "firstOnly": true,
+          "matchField": {
+            "selector": "#containerType .container-type-input",
+            "value": "containerType"
+          },
+          "delay": 2500
+        },
+        {
+          "type": "click",
+          "selector": "#release-eq-button",
+          "typeAction": "roData",
+          "delay": 2500
         }
       ]
     }
